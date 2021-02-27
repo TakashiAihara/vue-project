@@ -1,0 +1,64 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="main.css">
+<title>Vue.js入門</title>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<body>
+  <div id="app">
+
+    <input type="text" v-model="addName">
+    <input type="button" @click="onclick">
+    <table>
+      <thead>
+        <tr>
+          <th v-for="header in tableHeader">{{header}}</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr v-for="data in formattedTableData">
+          <td>{{data.id}}</td>
+          <td>{{data.name}}</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</body>
+
+<script>
+  var app = new Vue({
+    el: '#app',
+    data: {
+      tableHeader: ["ID", "Name"], // ヘッダもデータとして渡す。
+      tableData: [
+        {
+          id: 1, name: "Tanaka",
+        }, {
+          id: 2, name: "Tamura",
+        }, {
+          id: 3, name: "Nakata"
+        }
+      ],
+      addName: ""
+    },
+    computed: {
+      formattedTableData(){
+        return this.tableData.map((data) => {
+          return {
+            id: data.id.toString().padStart(3, '0'),
+            name: data.name
+          }
+        })
+      }
+    },
+    methods: {
+      onclick(){
+        this.tableData.push({
+          id: Math.max.apply(null, this.tableData.map(data => data.id)) + 1,
+          name: this.addName
+        })
+      }
+    }
+  });
+</script>
