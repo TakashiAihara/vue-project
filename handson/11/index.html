@@ -7,7 +7,7 @@
   <div id="app">
 
     <input type="text" v-model="addName">
-    <input type="button" @click="onclick">
+    <input value="追加" type="button" @click="onclick">
     <table>
       <thead>
         <tr>
@@ -43,7 +43,7 @@
       addName: ""
     },
     computed: {
-      formattedTableData(){
+      formattedTableData(){ // id を 0埋め
         return this.tableData.map((data) => {
           return {
             id: data.id.toString().padStart(3, '0'),
@@ -54,8 +54,9 @@
     },
     methods: {
       onclick(){
+        if(this.tableData.some(data => data.name === this.addName)) return; // 重複はそのまま返す
         this.tableData.push({
-          id: Math.max.apply(null, this.tableData.map(data => data.id)) + 1,
+          id: Math.max.apply(null, this.tableData.map(data => data.id)) + 1, // id は最大+1
           name: this.addName
         })
       }
